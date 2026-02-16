@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     while True:
         #replace user with your USC username in all subscriptions
-        client.publish("asfox/number", f"{number}")
+        client.publish("asfox/ipinfo", f"{ip_address}")
         print("Publishing ip address")
         time.sleep(4)
 
@@ -48,6 +48,6 @@ if __name__ == '__main__':
         date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         #publish date and time in their own topics
         """your code here"""
-        client.publish("asfox/number", f"{number}")
+        client.publish("asfox/datetime", f"{date_time}")
         print("Publishing date and time")
         time.sleep(4)
