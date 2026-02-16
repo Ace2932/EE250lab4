@@ -4,13 +4,13 @@ import paho.mqtt.client as mqtt
 import time
 
 def on_connect(client, userdata, flags, rc):
-    print("Connected to server (i.e., broker) with result code "+str(rc))
-    client.subscribe("asfox/numberReceived")
+    print("Connected to server with result code "+str(rc))
+    client.subscribe("asfox/pong")
 
-    client.message_callback_add("asfox/numberReceived", on_message_from_number_received)
+    client.message_callback_add("asfox/pong", on_message_from_number_received_pong)
 
 
-def on_message_from_number_received(client, userdata, msg):
+def on_message_from_number_received_pong(client, userdata, msg):
     try:
         received_number = int(msg.payload.decode())
     except Exception:
@@ -20,7 +20,7 @@ def on_message_from_number_received(client, userdata, msg):
     sent_number = received_number + 1
     print(f"[START] got number received={received_number} -> publish number sent={sent_number}")
     time.sleep(1)
-    client.publish("asfox/numberSent", f"{sent_number}")
+    client.publish("asfox/ping", f"{sent_number}")
 
 def on_message(client, userdata, msg):
     print("Default callback - topic: " + msg.topic + "   msg: " + str(msg.payload, "utf-8"))
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     # client.loop_forever()
 
     start_number = 0
-    client.publish("asfox/numberSent", f"{start_number}")
+    client.publish("asfox/ping", f"{start_number}")
     print(f"[START] start_number -> publish numberSent={start_number}")
     time.sleep(1)
     client.loop_forever()

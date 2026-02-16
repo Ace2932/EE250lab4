@@ -5,12 +5,12 @@ import time
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
-    client.subscribe("asfox/numberSent")
+    client.subscribe("asfox/ping")
 
-    client.message_callback_add("asfox/numberSent", on_message_from_number_sent)
+    client.message_callback_add("asfox/ping", on_message_from_number_sent_ping)
 
 
-def on_message_from_number_sent(client, userdata, msg):
+def on_message_from_number_sent_ping(client, userdata, msg):
     try:
         received_number = int(msg.payload.decode())
     except Exception:
@@ -20,7 +20,7 @@ def on_message_from_number_sent(client, userdata, msg):
     sent_number = received_number + 1
     print(f"[CONT] got number sent={received_number} -> publish number received={sent_number}")
     time.sleep(1)
-    client.publish("asfox/numberReceived", f"{sent_number}")
+    client.publish("asfox/pong", f"{sent_number}")
 
 def on_message(client, userdata, msg):
     print("Default callback - topic: " + msg.topic + "   msg: " + str(msg.payload, "utf-8"))
